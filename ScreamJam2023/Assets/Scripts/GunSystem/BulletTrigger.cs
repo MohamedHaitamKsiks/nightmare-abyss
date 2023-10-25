@@ -23,7 +23,7 @@ public struct BulletHit
 public class BulletTrigger : MonoBehaviour
 {
     // event with 3 params position, direction, normal, damage.
-    public UnityEvent<BulletHit> OnBulletHit;
+    public UnityEvent<BulletHit> OnBulletHit = new();
 
     // Start is called before the first frame update
     void Start()

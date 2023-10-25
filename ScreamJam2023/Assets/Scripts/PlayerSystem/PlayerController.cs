@@ -6,9 +6,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     // consts
-    private const float MOUSE_SENSITIVITY = 200.0f;
-    private const float PLAYER_ACC = 10.0f;
-    private const float PLAYER_SPEED = 8.0f;
+    private const float MOUSE_SENSITIVITY = 100.0f;
+    private const float PLAYER_ACC = 12.0f;
+    private const float PLAYER_SPEED = 10.0f;
     private const float PLAYER_JUMP_FORCE = 14.0f;
     private const float PLAYER_JUMP_BUFFER_TIME = 0.2f;
     private const float GRAVITY = -21.81f;
@@ -16,17 +16,17 @@ public class PlayerController : MonoBehaviour
     private const float HEAD_BOB_AMP = 0.2f;
     private const float HEAD_BOB_ROT = 1.0f;
     private const float HEAD_BOB_FREQ = 10.0f;
-    private const float HEAD_TILT_SPEED = 12.0f;
-    private const float HEAD_TILT_ANGLE = 2.0f;
+    private const float HEAD_TILT_SPEED = 9.0f;
+    private const float HEAD_TILT_ANGLE = 4.0f;
 
     // open fields
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Transform headTransform;
-
     [SerializeField] private GunHolder gunHolder;
-
     [SerializeField] private Transform groundCheckerTransform;
     [SerializeField] private LayerMask groundMask;
+    //sfx
+    [SerializeField] private SFXPlayer sfxGround;
     
     // components
     private CharacterController controller;
@@ -82,7 +82,13 @@ public class PlayerController : MonoBehaviour
         // gravity 
         velocity.y += GRAVITY * Time.deltaTime;
 
-        var groundCollided = Physics.CheckSphere(groundCheckerTransform.position, GROUND_CHECKER_SIZE, groundMask);
+        var groundCollided = Physics.CheckBox(
+            groundCheckerTransform.position, 
+            new Vector3(0.2f, GROUND_CHECKER_SIZE, 0.2f),
+            Quaternion.identity, 
+            groundMask
+        );
+
         if (groundCollided && velocity.y < 0.0f)
         {
             velocity.y = -0.0f;
@@ -96,6 +102,7 @@ public class PlayerController : MonoBehaviour
                 headBobAmp = -HEAD_BOB_AMP;
                 headBobFreq = HEAD_BOB_FREQ;
                 headTime = 0.0f;
+                sfxGround.Play();
             }
         }
         if (!groundCollided && velocity.y < 0.0f)
@@ -154,6 +161,12 @@ public class PlayerController : MonoBehaviour
         );
         
         // head tilt
-        headTilt = Mathf.Lerp(headTilt, HEAD_TILT_ANGLE * direction.x, Time.deltaTime * HEAD_TILT_SPEED);
+        headTilt = Mathf.Lerp(headTilt, HEAD_TILT_ANGLE * (Vector3.Dot(direction, transform.right)), Time.deltaTime * HEAD_TILT_SPEED);
+    }
+
+    // push player in a certain direction
+    public void Push(Vector3 direction, float Force)
+    {
+        velocity += direction.normalized * Force;
     }
 }

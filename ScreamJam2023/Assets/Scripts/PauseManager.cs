@@ -2,23 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PauseManager : MonoBehaviour
+public class PauseManager : Singleton<PauseManager>
 {
-    public static PauseManager Instance { get; private set; } = null;
-    
     private bool paused = false;
 
     // Start is called before the first frame update
-    void Awake()
+    public override void OnInit()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-        }
-
-        DontDestroyOnLoad(gameObject);
-        Instance = this;
-        
         Resume();
     }
 

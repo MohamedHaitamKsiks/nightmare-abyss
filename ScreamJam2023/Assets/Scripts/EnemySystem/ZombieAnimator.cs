@@ -9,6 +9,8 @@ public class ZombieAnimator : MonoBehaviour
 
     // components
     private EnemyController enemyController;
+    private PlayerFollower playerFollower;
+    private BoxCollider boxCollider;
     
     // data
     private Rigidbody[] ragdollBodies;
@@ -16,6 +18,9 @@ public class ZombieAnimator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerFollower = GetComponent<PlayerFollower>();
+        boxCollider = GetComponent<BoxCollider>();
+
         // init ragdoll
         ragdollBodies = GetComponentsInChildren<Rigidbody>();
         foreach (var body in ragdollBodies)
@@ -30,6 +35,7 @@ public class ZombieAnimator : MonoBehaviour
                 body.isKinematic = false;
             
             animator.enabled = false;
+            boxCollider.enabled = false;
             
         });
     }
@@ -37,6 +43,8 @@ public class ZombieAnimator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!animator.enabled) return;
+
+        animator.SetFloat("velocity", playerFollower.MovemnetSpeed);
     }
 }

@@ -7,24 +7,27 @@ using UnityEngine;
 public class ItemObject : MonoBehaviour
 {
     // consts
-    private const float ITEM_COLLECTION_ANIMATION_SPEED = 10.0f; 
+    private const float ITEM_COLLECTION_ANIMATION_SPEED = 20.0f; 
+    private const float ITEM_ROTATION_SPEED = -130.0f;
+    private const float ITEM_OSCIL_FREQ = 3.0f;
+    private const float ITEM_OSCIL_AMP = 0.3f;
 
     // fields
     [SerializeField] private int count = 1;
     [SerializeField] private string itemID;
+    [SerializeField] private Transform itemContainerTransform;
     
-    // components
-    private BoxCollider boxCollider;
     
     // data
     private bool collected = false;
     private InventoryManager inventoryManager = null;
+    private float animationTime = 0.0f;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        boxCollider = GetComponent<BoxCollider>();
+        
     }
 
     // Update is called once per frame
@@ -33,16 +36,25 @@ public class ItemObject : MonoBehaviour
         // animate item if collected
         if (collected)
         {
-            transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * ITEM_COLLECTION_ANIMATION_SPEED);
-            
+            var targetPosition = Vector3.up * 0.5f;
+            transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, Time.deltaTime * ITEM_COLLECTION_ANIMATION_SPEED);
+            //transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, Time.deltaTime * ITEM_COLLECTION_ANIMATION_SPEED);
+
             // destroy when too close
-            const float precision = 0.1f; 
-            if (transform.localPosition.magnitude < precision)
+            const float precision = 0.2f; 
+            if ((transform.localPosition - targetPosition).magnitude < precision)
             {
                 // add item to inventory and destroy
                 inventoryManager.CollectItem(itemID, count);
                 Destroy(gameObject);
             }
+        }
+        // animate idle
+        else
+        {
+            itemContainerTransform.Rotate(transform.up, ITEM_ROTATION_SPEED * Time.deltaTime);
+            itemContainerTransform.localPosition = Vector3.up * (Mathf.Sin(animationTime * ITEM_OSCIL_FREQ) * ITEM_OSCIL_AMP);
+            animationTime += Time.deltaTime;
         }
     }
 

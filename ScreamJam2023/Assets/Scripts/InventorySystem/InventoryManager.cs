@@ -6,6 +6,7 @@ public class InventoryManager : MonoBehaviour
 {
     // collected items with it's quantity
     public readonly Dictionary<string, int> Items = new();
+    public const string ITEM_NULL_ID = "";
     
     // Start is called before the first frame update
     void Start()
@@ -22,7 +23,7 @@ public class InventoryManager : MonoBehaviour
     // add item
     public void CollectItem(string itemID, int count = 1)
     {
-        if (Items.ContainsKey(itemID) && ItemManager.GetItem(itemID) is not Weapon)
+        if (Items.ContainsKey(itemID))
         {
             Items[itemID] += count;
         }

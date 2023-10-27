@@ -2592,8 +2592,9 @@ GameObject:
   - component: {fileID: 1016942011256956105}
   - component: {fileID: 5832072216545064884}
   - component: {fileID: 7699130639050861880}
+  - component: {fileID: 3411044407256260732}
   m_Layer: 5
-  m_Name: Ammo
+  m_Name: AmmoCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2661,6 +2662,61 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: x0
+--- !u!114 &3411044407256260732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6305499207569223705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8cac20f61da8cdfd87a26e07a2ce787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.002686226
+      value: 1.0017309
+      inSlope: -4.258439
+      outSlope: -4.258439
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.0526994
+    - serializedVersion: 3
+      time: 0.12505604
+      value: 0.47301552
+      inSlope: 3.0994103
+      outSlope: 3.0994103
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.059128158
+    - serializedVersion: 3
+      time: 0.7186064
+      value: 1.0250286
+      inSlope: -0.7124671
+      outSlope: -0.7124671
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.32351562
+    - serializedVersion: 3
+      time: 1.0009502
+      value: 1.0028956
+      inSlope: 0.7198691
+      outSlope: 0.7198691
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.20196377
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rectTransform: {fileID: 5980154042634667716}
 --- !u!1 &6871780083794517367
 GameObject:
   m_ObjectHideFlags: 0
@@ -2709,6 +2765,8 @@ MonoBehaviour:
   cursorImage: {fileID: 3343795796998228928}
   cursor: {fileID: 1922040272, guid: b4fb2c21a12dc3a29b1fdd14173a2088, type: 3}
   cursorActive: {fileID: -62568892, guid: b4fb2c21a12dc3a29b1fdd14173a2088, type: 3}
+  inventoryManager: {fileID: 9019874240042880367}
+  bulletCounter: {fileID: 3411044407256260732}
   SwayVelocity: {x: 0, y: 0}
   MovementSpeed: 0
 --- !u!1 &6989981650041415084
@@ -2842,6 +2900,7 @@ MonoBehaviour:
   layer:
     serializedVersion: 2
     m_Bits: 320
+  bulletCounter: {fileID: 3411044407256260732}
 --- !u!1 &7123050391179805758
 GameObject:
   m_ObjectHideFlags: 0
@@ -3671,11 +3730,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5850094505701285336, guid: 7df7959781cea1f68a1ffb306d03a10d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5850094505701285336, guid: 7df7959781cea1f68a1ffb306d03a10d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.5
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 8230319974427921673, guid: 7df7959781cea1f68a1ffb306d03a10d, type: 3}
       propertyPath: m_Pivot.x
@@ -3796,11 +3855,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5850094505701285336, guid: 7df7959781cea1f68a1ffb306d03a10d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -6
+      value: -2.0000038
       objectReference: {fileID: 0}
     - target: {fileID: 5850094505701285336, guid: 7df7959781cea1f68a1ffb306d03a10d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1
+      value: -3.000002
       objectReference: {fileID: 0}
     - target: {fileID: 8230319974427921673, guid: 7df7959781cea1f68a1ffb306d03a10d, type: 3}
       propertyPath: m_Pivot.x

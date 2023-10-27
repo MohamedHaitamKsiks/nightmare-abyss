@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,9 @@ public class GunHolder : MonoBehaviour
     [SerializeField] private Sprite cursor;
     [SerializeField] private Sprite cursorActive;
 
+    [SerializeField] private InventoryManager inventoryManager;
+    [SerializeField] private BulletCounter bulletCounter;
+
     // data
     private Gun gun = null; 
     private Weapon weapon = null;
@@ -44,7 +48,7 @@ public class GunHolder : MonoBehaviour
 
     // chenge gun animation
     private bool isGunUp = false;
-    private bool isChangingGun = false;
+    public bool IsChangingGun {get; private set;} = false;
     private float gunChangingScale = 1.0f;
 
     // Start is called before the first frame update
@@ -62,7 +66,7 @@ public class GunHolder : MonoBehaviour
 
         // change gun when down
         const float changeGunPrecision = 0.1f;
-        if (isChangingGun && !isGunUp && Mathf.Abs(gunChangingScale - gunChangingScale) < changeGunPrecision)
+        if (IsChangingGun && !isGunUp && Mathf.Abs(gunChangingScale - gunChangingTargetScale) < changeGunPrecision)
         {
             if (gun != null)
             {
@@ -73,13 +77,15 @@ public class GunHolder : MonoBehaviour
             if (weapon != null)
             {
                 gun = Instantiate(weapon.WeaponPrefab, transform).GetComponent<Gun>();
+                bulletCounter.UpdateValue(inventoryManager.Items[weaponID]);
                 isGunUp = true;
+                IsChangingGun = false;
             }
 
         }
 
         // cache gun transform
-        if (gun == null) return;
+        if (gun == null || weapon == null) return;
 
         var gunTransform = gun.transform;
 
@@ -125,6 +131,7 @@ public class GunHolder : MonoBehaviour
     public void Shoot()
     {
         if (weapon == null) return;
+
         // cache gun transform
         gunRecoilTime = 0.0f;
         isGunShooting = true;
@@ -135,10 +142,13 @@ public class GunHolder : MonoBehaviour
 
     public void ChangeWeaponTo(string newWeaponID)
     {
-        isChangingGun = true;
+        if (IsChangingGun) return;
+
+        IsChangingGun = true;
         isGunUp = false;
 
         weaponID = newWeaponID;
+        Debug.Log(weaponID);
         weapon = (weaponID == "")? null: (Weapon) ItemManager.GetItem(weaponID);
     }
 }

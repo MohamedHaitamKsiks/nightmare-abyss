@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class EquipmentController : MonoBehaviour
 {
-
     // conts
     public const int PRIMARY_SLOT = 0;
     public const int SECONDARY_SLOT = 1;
@@ -14,6 +13,10 @@ public class EquipmentController : MonoBehaviour
     [SerializeField] private GunHolder gunHolder;
     [SerializeField] private InventoryMenu inventoryMenu;
 
+
+    // components
+    private InventoryManager inventoryManager;
+
     //data
     private readonly string[] equipedWeaponsID = { "", "" };
     private int currentWeapon = PRIMARY_SLOT;
@@ -21,16 +24,19 @@ public class EquipmentController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        inventoryManager = GetComponent<InventoryManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        int newWeapon = currentWeapon - (int) Input.mouseScrollDelta.y;
-        newWeapon = (newWeapon % equipedWeaponsID.Length + equipedWeaponsID.Length) % equipedWeaponsID.Length;
+        if (Mathf.Abs(Input.mouseScrollDelta.y) < 0.01f) return;
 
-        if (newWeapon != currentWeapon)
+        int newWeapon = currentWeapon - (int) Mathf.Sign(Input.mouseScrollDelta.y);
+        newWeapon = Mathf.Clamp(newWeapon, 0, equipedWeaponsID.Length - 1);
+        Debug.Log(newWeapon);
+
+        if (!gunHolder.IsChangingGun && equipedWeaponsID[newWeapon] != InventoryManager.ITEM_NULL_ID && newWeapon != currentWeapon )
         {
             currentWeapon = newWeapon;
             gunHolder.ChangeWeaponTo(equipedWeaponsID[newWeapon]);

@@ -1,16 +1,20 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(InventoryManager), typeof(EquipmentController), typeof(PlayerController))]
 public class ShootController : MonoBehaviour
 {
-    private const float MAX_RANGE = 10000.0f;
     private const float SHOOT_BUFFER = 0.3f;
 
     [SerializeField] private Transform cameraTranform;
     [SerializeField] private GunHolder gunHolder;
     [SerializeField] private LayerMask layer;
+    [SerializeField] BulletCounter bulletCounter;
+
 
     private InventoryManager inventoryManager;
     private EquipmentController equipmentController;
@@ -37,8 +41,6 @@ public class ShootController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.DrawRay(cameraTranform.position, cameraTranform.forward * 1000.0f);
-
         // skip when pause
         if (PauseManager.IsPaused()) return;
 
@@ -49,15 +51,25 @@ public class ShootController : MonoBehaviour
             shootBuffer = SHOOT_BUFFER;
         }
 
+        var weapon = equipmentController.GetCurrentWeapon();
+
         // shoot
-        if (equipmentController.GetCurrentWeapon() != null && shootBuffer > 0.01f)
+        if (weapon != null && shootBuffer > 0.01f)
         {
             if (!canShoot) return;
+            if (inventoryManager.Items[weapon.ID] == 0) return;
+
+            // remove bullet 
+            if (weapon.UseBullets)
+            {
+                inventoryManager.Items[weapon.ID] -= 1;
+                bulletCounter.UpdateValueAnimated(inventoryManager.Items[weapon.ID]);
+            }
+
             canShoot = false;
             shootBuffer = 0.0f;
 
-            var weapon = equipmentController.GetCurrentWeapon();
-            if (weapon != null && weapon.Delai > 0.01f)
+            if (weapon.Delai > 0.01f)
             {
                 StartCoroutine(ShootDelay(weapon.Delai));
             }

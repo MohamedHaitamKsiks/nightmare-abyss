@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 1
-  itemID: gun
+  itemID: shotgun
   itemContainerTransform: {fileID: 1827478405916863994}
 --- !u!1 &5656626490379604169
 GameObject:

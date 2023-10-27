@@ -24,6 +24,8 @@ public class Consumable: Item
 [Serializable]
 public class Weapon: Item
 {
+    // 
+    public bool UseBullets = true;
     // max damage by weapon
     public float Damage = 5.0f;
     public float Range = 100.0f;

@@ -1,5 +1,5 @@
 # Nightmare Abyss
 
-Horror game made with unity for the SCREAM JAM 2023.
+Fast paced FPS game made with unity.
 
 Download the game [here](https://simple-team.itch.io/nightmare-abyss)
